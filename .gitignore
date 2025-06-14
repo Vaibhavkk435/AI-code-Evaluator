@@ -1,0 +1,10 @@
+# Ignore node modules
+node_modules/
+
+# Ignore environment variable files
+.env
+.env.*  # if you use .env.local, .env.development, etc.
+
+# .gitignore
+dist/
+# Ignore build output

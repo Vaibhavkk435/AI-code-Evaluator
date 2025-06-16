@@ -1,6 +1,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
 
+import analyzeImageRouter from './routes/analyzeImage';
+import summarizeRouter from './routes/summarize';
 dotenv.config();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
@@ -490,7 +492,14 @@ function parseAnalysisResponse(responseText: string, maxScore: number): Analysis
     };
   }
 }
-
+export async function summarizeText(text: string): Promise<string> {
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const prompt = 'Summarize the following text in a concise paragraph:\n\n${text}';
+  const result = await model.generateContent(prompt);
+  const response = result.response;
+  if (!response) throw new Error('No response from Gemini');
+  return response.text();
+}
 // Enhanced convenience functions
 export async function analyzeWriting(text: string): Promise<AnalysisResult> {
   return analyzeText(text, { criteria: 'writing' });

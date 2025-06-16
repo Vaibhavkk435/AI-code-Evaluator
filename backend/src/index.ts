@@ -7,7 +7,11 @@ import analyzeImageRouter from './routes/analyzeImage';
 
 dotenv.config();
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: '*', // allow all origins — for production, consider restricting this
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use('/api', analyzeImageRouter); 
 app.use(express.json());
 app.use('/api', analyzeRouter);
@@ -15,5 +19,5 @@ app.use('/api', summarizeRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on ${PORT}`);
 });
